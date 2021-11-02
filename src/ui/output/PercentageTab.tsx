@@ -1,10 +1,10 @@
 import React, {Fragment} from "react";
 import {H3, H3First} from "./H3";
-import {Assignment} from "../../model/Assignment";
 import styled from "styled-components";
 import {InputChangeEvent} from "../StyledInput";
 import AutosizeInput from "react-input-autosize";
 import {OkPercentageResult, PercentageResult} from "../../model/PercentageResult";
+import {DEFAULT_OUT_OF} from "../../util/Constants";
 
 
 const Display = styled.span.attrs((props: { marginRight?: string }) => ({
@@ -32,14 +32,10 @@ const Or = styled.b`
 type State<T> = [T, React.Dispatch<React.SetStateAction<T>>]
 
 
-export default function PercentageTab(props: { assignments: Assignment[], threshState: State<string>, outOfState: State<string> }) {
-    const assignments = props.assignments;
+export default function PercentageTab(props: { result: PercentageResult, threshState: State<string>, outOfState: State<string> }) {
+    const result = props.result;
     const [threshStr, setThreshStr] = props.threshState;
     const [outOfStr, setOutOfStr] = props.outOfState;
-
-    let defaultOutOf = 100;
-    let outOf = parseFloat(outOfStr);
-    const result = PercentageResult.create(assignments, threshStr, !isNaN(outOf) ? outOf : defaultOutOf);
 
     return (
         <Fragment>
@@ -76,7 +72,7 @@ export default function PercentageTab(props: { assignments: Assignment[], thresh
                                }}
                                maxLength={5}
                                type="numeric"
-                               placeholder={defaultOutOf.toString()}
+                               placeholder={DEFAULT_OUT_OF.toString()}
                                onChange={(event: InputChangeEvent) =>
                                    setOutOfStr(event.target.value.trim())
                                }/>

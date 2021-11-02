@@ -18,6 +18,8 @@ import {NoPaddingCard} from "./Card";
 import {RiShareForward2Fill} from "react-icons/ri";
 import ShareSheet from "./ShareSheet";
 import {useIdleTimer} from "react-idle-timer";
+import {PercentageResult} from "../model/PercentageResult";
+import {DEFAULT_OUT_OF} from "../util/Constants";
 
 
 const TableHeader = styled(StyledInput)`
@@ -73,6 +75,14 @@ export default function MainScreen() {
     const [title, setTitle] = useState<string>("");
     const percentageThreshState = useState("");
     const outOfState = useState("");
+    const outOfStr = outOfState[0];
+    const threshStr = percentageThreshState[0];
+
+    const outOf = parseFloat(outOfStr);
+    const result = React.useMemo(() =>
+            PercentageResult.create(assignments.slice(0, -1), threshStr, !isNaN(outOf) ? outOf : DEFAULT_OUT_OF),
+        [assignments, threshStr, outOf]
+    );
 
     const history = useHistory();
 
@@ -200,14 +210,14 @@ export default function MainScreen() {
                             <span>A+ Reach a <b>grade</b></span>]}>
                     <Tab tabName="REACH_PERCENTAGE">
                         {/*remove the last empty assignment (the add button)*/}
-                        <PercentageTab assignments={assignments.slice(0, -1)}
+                        <PercentageTab result={result}
                                        threshState={percentageThreshState}
                                        outOfState={outOfState}
                         />
                     </Tab>
                     <Tab tabName="REACH_GRADE">
                         {/*remove the last empty assignment (the add button)*/}
-                        <GradeTab assignments={assignments.slice(0, -1)}/>
+                        <GradeTab result={result}/>
                     </Tab>
                 </Tabbed>
             </Container>

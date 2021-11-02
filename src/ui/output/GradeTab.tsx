@@ -1,9 +1,9 @@
 import React from "react";
 import { H3First } from "./H3";
-import {Assignment} from "../../model/Assignment";
+import {PercentageResult} from "../../model/PercentageResult";
 
 
-export default function GradeTab(_: {assignments: Assignment[]}) {
+export default function GradeTab(_: {result: PercentageResult}) {
     return(
         <H3First>Coming Soon!</H3First>
     );
